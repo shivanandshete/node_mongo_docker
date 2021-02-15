@@ -1,0 +1,42 @@
+version: "3"
+
+services: 
+    frontend:
+        container_name: nodeapp
+        build: .
+        restart: unless-stopped
+        ports:
+           - "8080:8080"
+        env_file: .env
+        environment:
+           - MONGO_USERNAME=$MONGO_USERNAME
+           - MONGO_PASSWORD=$MONGO_PASSWORD
+           - MONGO_HOSTNAME=db
+           - MONGO_PORT=$MONGO_PORT
+           - MONGO_DB=$MONGO_DB  
+        networks: 
+           - nodenw
+        links: 
+           - db 
+    db:
+        container_name: db
+        image: mongo
+        restart: always
+        env_file: .env
+        environment:
+           - MONGO_INITDB_ROOT_USERNAME=$MONGO_USERNAME
+           - MONGO_INITDB_ROOT_PASSWORD=$MONGO_PASSWORD
+        ports: 
+           - "27017:27017"
+        networks:
+           - nodenw
+        volumes:
+           - nodevolume:/data/db   
+networks:
+    nodenw:
+volumes:
+    nodevolume:
+       driver: "bridge"               
+
+
+
