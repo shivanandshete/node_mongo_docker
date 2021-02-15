@@ -34,9 +34,9 @@ services:
            - nodevolume:/data/db   
 networks:
     nodenw:
+      driver: bridge
 volumes:
-    nodevolume:
-       driver: bridge               
+    nodevolume:            
 
 
 
